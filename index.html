@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>Quick and easy diffing on the client side</title>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script>
+		function resizeTextArea() {
+            //Wrap your form contents in a div and get its offset height
+            var heightOfForm = $('#heading').height() + $('#twitter').height();
+            //Get height of body (accounting for user-installed toolbars)
+            var heightOfBody = $('body').height();
+            var buffer = 100; //Accounts for misc. padding, etc.
+            //Set the height of the textarea dynamically
+            $('textarea').each(function() {
+            	$(this).css('height', (heightOfBody - heightOfForm) - buffer);
+            });
+        }
+
+        $(window).on('resize', resizeTextArea);
+        $(document).ready(resizeTextArea);
+        $(document).on('input propertychange', 'textarea', function() {
+        	var color = '';
+        	if( $('#left').val() === $('#right').val() ) {
+        		color = '#81E374'; // Pastel green
+        		$('#heading').html("Identical!");
+        	} else {
+        		color = '#E37488'; // Pastel red
+        		$('#heading').html("Differences");
+        	}
+        	$('body').css('background-color', color);
+        });
+	</script>
+	<style>
+		textarea {
+			width: 49%;
+			border: 1px solid #999999;
+		}
+
+		h1 {
+			text-align: center;
+		}
+
+		p {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<p id="twitter"><a href="http://twitter.com/ryan_kirkman" class="twitter-follow-button">Follow @ryan_kirkman</a></p>
+	<h1 id="heading">Select Files...</h1>
+	<textarea id="left"></textarea>
+	<textarea id="right"></textarea>
+	<p>Made by <a href="http://github.com/ryankirkman">Ryan Kirkman</a></p>
+	<script src="//platform.twitter.com/widgets.js"></script>
+</body>
+</html>
